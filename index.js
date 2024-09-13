@@ -1,8 +1,24 @@
 // Importando e utilizando módulos/pacotes/librarys
 const { select, input, checkbox } = require('@inquirer/prompts')
+const fs = require('fs').promises
 
-let metas = []
+let metas
 let mensagem = 'Bem vindo ao aplicativo de gerenciamneto de metas!';
+
+const carregarMetas = async () => {
+    try {
+        const dados = await fs.readFile('metas.json', 'utf-8')
+        metas = JSON.parse(dados)
+    }
+
+    catch(erro) {
+        metas = []
+    }
+}
+
+const salvarMetas = async () => {
+    await fs.writeFile('metas.json', JSON.stringify(metas, null, 2))
+}
 
 // Arrow Function para Cadastrar a meta
 const cadastrarMeta = async () => {
@@ -26,6 +42,11 @@ const cadastrarMeta = async () => {
 
 // Arrow Function para listar metas
 const listarMetas = async () => {
+    if (metas.length == 0) {
+        mensagem = 'Nenhuma meta cadastrada.'
+        return
+    }
+
     const respostas = await checkbox ({
         message: 'Use as setas para mudar de meta, o espaço para marcar ou desmarcar e o Enter para finalizar essa etapa.',
         choices: [...metas],
@@ -56,6 +77,10 @@ const listarMetas = async () => {
 
 // Metas realizadas
 const metasRealizadas = async () => {
+    if (metas.length == 0) {
+        mensagem = 'Nenhuma meta cadastrada.'
+        return
+    }
     const realizadas = metas.filter ((meta) => {  /* HOF -> Sempre recebe uma função*/ 
         return meta.checked
     })
@@ -76,6 +101,10 @@ const metasRealizadas = async () => {
 
 // Metas em aberto
 const metasAbertas = async () => {
+    if (metas.length == 0) {
+        mensagem = 'Nenhuma meta cadastrada.'
+        return
+    }
     const abertas = metas.filter((meta) => { /* HOF -> Sempre recebe uma função*/ 
         return !meta.checked
     })
@@ -94,7 +123,6 @@ const metasAbertas = async () => {
 
 // Arrow Function para deletar metas
 const deletarMetas = async () => {
-
     if (metas.length == 0 ) {
          mensagem = 'Nenhuma meta cadastrada.'
         return
@@ -136,8 +164,10 @@ const mostrarMensagem = () => {
 
 // Menu principal - Função assíncrona
 const start = async () => {
+    await carregarMetas()
     while (true) {
         mostrarMensagem()
+        await salvarMetas()
         // "await" -> Fica em repouso até o usuário escolher uma das choices
         const opcao = await select({
             message: 'Menu > ',
@@ -173,9 +203,11 @@ const start = async () => {
         switch (opcao) {
             case 'Cadastrar':
                 await cadastrarMeta()
+                await salvarMetas()
                 break
             case 'Listar':
                 await listarMetas()
+                await salvarMetas()
                 break
             case 'Realizadas':
                 await metasRealizadas()
@@ -185,6 +217,7 @@ const start = async () => {
                 break
             case 'Deletar':
                 await deletarMetas()
+                await salvarMetas()
                 break
             case 'Sair':
                 console.log('Até logo!')

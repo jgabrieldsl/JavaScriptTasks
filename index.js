@@ -1,43 +1,41 @@
-// Hello World
-console.log("Hello World!")
+// Importando e utilizando módulos/pacotes/librarys
+const { select } = require('@inquirer/prompts')
 
-// Variáveis
-const nome = "João Gabriel"
-console.log(nome);
+// Menu principal - Função assíncrona
+const start = async () => {
+    while (true) {
+        // "await" -> Fica em repouso até o usuário escolher uma das choices
+        const opcao = await select({
+            message: 'Menu >',
+            choices: [
+                {
+                    name: "Cadastrar meta",
+                    value: 'Cadastrar'
+                },
+                {
+                    name: 'Listar metas',
+                    value: 'Listar'
+                },
+                {
+                    name: 'Sair',
+                    value: 'Sair'
+                }
+            ]
 
-// Arrays & Objetos
-let metasArray = ["João", "Aluno Rocket Seat"]
-console.log(metasArray[0] + " - " + metasArray[1]);
+        })
 
-let metasObject = {
-    value: 'Ler um livro todo mês!',
-    checked: false,
-    isChecked: (info) => {
-        console.log(info);
+        switch (opcao) {
+            case 'Cadastrar':
+                console.log('Vamos cadastrar')
+                break
+            case 'Listar':
+                console.log('Listando metas')
+                break
+            case 'Sair':
+                console.log('Até logo!')
+                return
+        }
     }
 }
 
-metasObject.isChecked(metasObject.checked);
-
-// Testando Arrays & Objetos
-let metas =  [
-    metasObject, {
-        value: 'Caminhar 20 minutos /dia',
-        checked: true
-    }
-]
-
-console.log(metas[0].value)
-
-
-// Arrow Function
-const arrowFunctionCriarMetas = () => {
-    // Conteúdo da Arrow Function aqui
-}
-
-// Function 
-function FunctionCriarMetas () {
-    // Conteúdo da Function aqui
-}
-
-
+start()

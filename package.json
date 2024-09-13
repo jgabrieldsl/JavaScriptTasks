@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "inquirer": "^10.2.2"
+  },
+  "name": "tasksjs",
+  "version": "1.0.0",
+  "description": "Rocket Seat's Next Level Week JavaScript project, held between 09/09 and 12/09.",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgabrieldsl/JavaScriptTasks.git"
+  },
+  "author": "JGabriel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jgabrieldsl/JavaScriptTasks/issues"
+  },
+  "homepage": "https://github.com/jgabrieldsl/JavaScriptTasks#readme"
+}
